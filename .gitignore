@@ -1,0 +1,24 @@
+# Build
+build/
+.gradle/
+out/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Gradle wrapper JAR (will be downloaded)
+# Keep gradle-wrapper.properties but not the JAR
+gradle/wrapper/gradle-wrapper.jar
+
+# Test files
+test_*.py
+__pycache__/
+
+# Local config
+*.local

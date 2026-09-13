@@ -1,0 +1,43 @@
+# BurpMCP-Ultra Caddy Reverse Proxy Configuration
+#
+# Caddy acts as a stable proxy between MCP clients and the Burp extension,
+# preventing SSE timeout disconnections and providing reliable buffering.
+#
+# Usage:
+#   sudo cp configs/Caddyfile /etc/caddy/Caddyfile
+#   sudo systemctl restart caddy
+#
+# Then configure your MCP client to connect to :9900 instead of :9876
+
+# MCP SSE Proxy (primary)
+:9900 {
+    reverse_proxy 127.0.0.1:9876 {
+        transport http {
+            read_timeout 0
+            write_timeout 0
+            response_header_timeout 0
+        }
+        flush_interval -1
+        header_up Connection {>Connection}
+        header_up Upgrade {>Upgrade}
+    }
+}
+
+# MCP SSE Proxy (secondary)
+:9901 {
+    reverse_proxy 127.0.0.1:9877 {
+        transport http {
+            read_timeout 0
+            write_timeout 0
+            response_header_timeout 0
+        }
+        flush_interval -1
+        header_up Connection {>Connection}
+        header_up Upgrade {>Upgrade}
+    }
+}
+
+# Dashboard Proxy (optional — dashboard already on :9878)
+:9902 {
+    reverse_proxy 127.0.0.1:9878
+}
